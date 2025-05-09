@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Consumo E85</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Simulador de Consumo com E85</h2>
+
+  <label>Distância (km):
+    <input type="number" id="distancia" value="100" step="1">
+  </label>
+
+  <label>Preço do Etanol (R$):
+    <input type="number" id="precoEtanol" value="4.49" step="0.01">
+  </label>
+
+  <label>Preço da Gasolina (R$):
+    <input type="number" id="precoGasolina" value="5.89" step="0.01">
+  </label>
+
+  <label>Consumo médio com E85 (km/L):
+    <input type="number" id="consumoE85" value="8.0" step="0.1">
+  </label>
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="result" id="resultado"></div>
+
+  <script>
+    function calcular() {
+      const distancia = parseFloat(document.getElementById("distancia").value);
+      const precoEtanol = parseFloat(document.getElementById("precoEtanol").value);
+      const precoGasolina = parseFloat(document.getElementById("precoGasolina").value);
+      const consumoE85 = parseFloat(document.getElementById("consumoE85").value);
+
+      const litrosTotais = distancia / consumoE85;
+      const litrosEtanol = litrosTotais * 0.85;
+      const litrosGasolina = litrosTotais * 0.15;
+
+      const custoTotal = (litrosEtanol * precoEtanol) + (litrosGasolina * precoGasolina);
+      const custoPorKm = custoTotal / distancia;
+
+      document.getElementById("resultado").innerHTML = `
+        Mistura E85:<br>
+        <strong>${litrosEtanol.toFixed(2)} L</strong> de Etanol<br>
+        <strong>${litrosGasolina.toFixed(2)} L</strong> de Gasolina<br><br>
+        Custo total da viagem: <strong>R$ ${custoTotal.toFixed(2)}</strong><br>
+        Custo por km: <strong>R$ ${custoPorKm.toFixed(2)}</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
